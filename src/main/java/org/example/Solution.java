@@ -1,40 +1,35 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public class Solution {
     public String countAndSay(int n) {
-        String result = "1";
-        while ( n != 1 ){
-           result = createString(stringToCountArray(result));
-           n--;
+        String res = "1";
+        if(n == 1) {
+            return "1";
         }
-        return result;
+        while(n > 1){
+            res = convert(res);
+            n--;
+        }
+        return res;
     }
 
-    public List<int[]> stringToCountArray(String number){
-        List<int[]> list = new ArrayList<>();
+    String convert(String s){
+        StringBuilder sb = new StringBuilder();
+        char cur = s.charAt(0);
         int count = 1;
-        int previousNumber = number.charAt(0) - '0';
-        for (int i = 1; i < number.length(); i++) {
-            if(previousNumber == number.charAt(i) - '0'){
-                count++;
-            }else {
-                list.add(new int[]{count, previousNumber});
-                previousNumber = number.charAt(i) - '0';
+        for(int i = 1; i < s.length(); i++){
+            if(s.charAt(i) != cur){
+                sb.append(count);
+                sb.append(cur);
+                cur = s.charAt(i);
                 count = 1;
+            }else {
+                count++;
             }
         }
-        list.add(new int[]{count, previousNumber});
-        return list;
-    }
-    public String createString(List<int[]> list){
-        StringBuilder sb = new StringBuilder();
-        for (int[] x: list) {
-            sb.append(x[0]);
-            sb.append(x[1]);
-        }
+        sb.append(count);
+        sb.append(cur);
         return sb.toString();
     }
 }
